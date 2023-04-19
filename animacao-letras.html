@@ -15,88 +15,87 @@
     value="30"
   />
   <output id="output" for="speed">0</output>
-<script>
-let title = document.querySelector('#title')
-let cancelAnimation = false;
-let button = document.getElementById("cancel")
-let start = document.getElementById("start")
-let range = document.getElementById("speed")
-let output = document.getElementById("output")
-let speed = 30;
-let running = false;
+    <script>
+      
+      let title = document.querySelector('#title')
+      let cancelAnimation = false;
+      let button = document.getElementById("cancel")
+      let start = document.getElementById("start")
+      let range = document.getElementById("speed")
+      let output = document.getElementById("output")
+      let speed = 30;
+      let running = false;
 
-const randomNumber = (max) => { return Math.floor(Math.random() * max) }
+      const randomNumber = (max) => { return Math.floor(Math.random() * max) }
 
-const replaceAt = (str, i, c) => {
-  return str.substring(0, i) + c +  str.substring(i+1, str.length)
-}
+      const replaceAt = (str, i, c) => {
+        return str.substring(0, i) + c +  str.substring(i+1, str.length)
+      }
 
-button.onclick = () => {
-  cancelAnimation = true;
-}
+      button.onclick = () => {
+        cancelAnimation = true;
+      }
 
-start.onclick = () => {
-  cancelAnimation = false;
-  changingLetterAnimation(title, speed)
-}
+      start.onclick = () => {
+        cancelAnimation = false;
+        changingLetterAnimation(title, speed)
+      }
 
-range.onchange = () => {
-  speed = range.value
-  output.innerText = range.value
-  cancelAnimation = true;
-  changingLetterAnimation(title, speed)
-}
+      range.onchange = () => {
+        speed = range.value
+        output.innerText = range.value
+        cancelAnimation = true;
+        changingLetterAnimation(title, speed)
+      }
 
-const changingLetterAnimation = async (element, speed) => {
-  
-  // Dont run the function when is already doing animation
-  if(running){return}
-  
-  running = true
+      const changingLetterAnimation = async (element, speed) => {
+        
+        // Dont run the function when is already doing animation
+        if(running){return}
+        
+        running = true
 
-  cancelAnimation = false
+        cancelAnimation = false
 
-  let originalText = element.innerText
+        let originalText = element.innerText
 
-  // Return a random uppercase A-Z char
-  const randomChar = () => {
-    return String.fromCharCode(65 + randomNumber(25))
-  }
+        // Return a random uppercase A-Z char
+        const randomChar = () => {
+          return String.fromCharCode(65 + randomNumber(25))
+        }
 
-  // Modify a html element with innerText attribute by replacing
-  // the char at the given index to a random char
-  const modifyChar = async (element, index) => {
-    let charRandomized = randomChar()
-    element.innerText = replaceAt(element.innerText, index, charRandomized)
-  }
+        // Modify a html element with innerText attribute by replacing
+        // the char at the given index to a random char
+        const modifyChar = async (element, index) => {
+          let charRandomized = randomChar()
+          element.innerText = replaceAt(element.innerText, index, charRandomized)
+        }
 
-  const sleep = (speed) => new Promise(r => setTimeout(r, speed));
+        const sleep = (speed) => new Promise(r => setTimeout(r, speed));
 
-  for(let i = 0; i<element.innerText.length; i++){
+        for(let i = 0; i<element.innerText.length; i++){
 
-    // If user need to reveal the text quickly or something like
-    if(cancelAnimation){
-      running = false
-      break
-    }
+          // If user need to reveal the text quickly or something like
+          if(cancelAnimation){
+            running = false
+            break
+          }
 
-    let originalChar = element.innerText.charAt(i)
+          let originalChar = element.innerText.charAt(i)
 
-    modifyChar(element, i)
-    await sleep(speed)
-    modifyChar(element, i)
-    await sleep(speed)
+          modifyChar(element, i)
+          await sleep(speed)
+          modifyChar(element, i)
+          await sleep(speed)
 
-    // Back to the original char at end of char animation
-    element.innerText = replaceAt(element.innerText, i, originalChar)
-  }
-  
-  running = false;
+          // Back to the original char at end of char animation
+          element.innerText = replaceAt(element.innerText, i, originalChar)
+        }
+        
+        running = false;
 
-}
+      }
 
-
-</script>
-
-</body>
+    </script>
+  </body>
 </html>
